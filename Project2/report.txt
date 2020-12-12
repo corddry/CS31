@@ -1,0 +1,18 @@
+Problems overcame:
+The part of the project that took me the longest was building the logic that places the input into one of the possible ranges.
+This was because I was thinking about trying to find the most efficient way to calculate the fine, but ultimately opted for a series of if statements.
+I also spent a lot of time debating whether to put an endl at the end of my last cout, but then I read the FAQ.
+Reason:
+Test data:							Reason:
+Amount Less than 40k 						Check range #1
+Amount less than 250k but more than 40k & fake athlete = y	Check range #2 & changing athlete fee
+Amount less than 250k but more than 40k & fake athlete = n	Check range #2 & changing athlete fee
+Amount more than 250k						Check range #3
+Amount equal to 0						Check calculation robustness
+Amount exactly 40k						Check logic borders
+Amount exactly 250k						Check logic borders
+Amount that would return multiple decimal places		Check precision
+Negative amount							Check bad input message
+No input for defendant						Check bad input message
+Something other than y or n					Check bad input message
+No input for y or n						Check bad input message

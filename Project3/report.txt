@@ -1,0 +1,116 @@
+Obstacles I overcame while programming Project 3:
+	-Realizing my plotLine function didn't work for negative distances because I used "i <= distance;" in my for loop.
+	-Having half my plotLines weren't plotting a line because I had an if statement (fgbg == HORIZ) instead of (dir == HORIZ)
+	-Mixing up getRows() and getCols() in my error checking segment of performCommands, 
+		preventing setChar beyond c = 20 and allowing setChar beyond r = 20
+	-Not having enough parentheses in the math while parsing the command string for vertical and horizontal line commands with negative distances,
+		resulting in some negative movements being incorrect
+	-Allowing chars to be plotted on the nonexistant "0th column" by having a >= 0 where a > 0 should have been
+
+Code Summary:
+After including all the necessary libraries, prototyping our functions, and declaring our constants that define the integers we are using to represent stuff like "foreground",
+the main method sets the size of the grid, and declares the default char and mode. Then it enters an endless for loop that repeatedly asks for command strings.
+	then...
+		break if the string is blank
+		run performCommands with our variables and store the return in int status
+		(skipping past performCommands briefly) depending on the return of performCommands, print error messages depending on the return
+		in case of a return of 0 - the function ran fine and draw the grid
+		in case of a return of 1 - the function ran into a syntax error, print an error message saying that and showing where the error occurred.
+		in case of a return of 2 - the command string tried to put characters off the grid, print an error message saying we cant do that and showing where the error occurred.
+		default to a print to cerr because there must have been a problem in the code if we dont have a return of 0 1 or 2
+
+	in performCommands
+		run one cycle of a for loop for each character in the commandString
+		at the beginning of the loop, default the direction to horizontal, the distance to 0 and skip to 0
+			in case of the character being V
+				set direction to Vert because the default is horiz then continue as if the character was H
+			in case of the character being H
+				if the next char is a -, see if it is two digits or one digit
+					if two digits, distance is the tens place multiplied by ten and added to the ones place, and all multiplied by -1. set skip to 3
+					if one digit, distance is the digit multiplied by -1. set skip to 2
+					if there isnt a digit afterwards, return 1 and set the badpos to where the digit should be
+				if the next character isnt a -, and is instead a digit see if it is two digits or one
+					set distance to the same thing as if it was negative but don't multiply by -1 and set skip to one less than it would be if the number was negative because we don't have to skip the -
+				if there isn't a digit or a - after v or h
+					set badpos to where it shold be and return 1
+				Check to make sure the commandstring doesnt want to put characters off the grid
+					if it does, set badpos to the index of v or h and return 2
+				use plotLine to Plot the line using our current position, the desired direction, the distance we parsed, the current char, and the current mode (plotLine explained below)
+				update the current position by adding distance to current column or row depending on the direction 
+			in case of the caracter being B or F
+				set the mode depending on the character
+				check to make sure the next character isprint
+					if it isnt, set badPos to that character and return 1
+					if it is, set the plotChar to that character. set skip to 1
+			in case of the character being C
+				reset current position, the plotchar, and the mode to the defaults and clear the grid
+			in case of the character being something else
+				set badpos to the character and return 1
+		add skip to i to skip forward all the extra characters that defined each command
+
+	in plotLine
+		check to make sure any of the input parmeters are bad or would cause chars to be placed off the grid
+			if there are any, return false
+		cycle through a for loop (distance + 1) times
+			each cycle, get the character at the current position
+			if that character is blank or if the current mode is foreground
+				set plotChar to that position
+			if the direction parameter is horiz,
+				current column ++ or -- depending on if distance is positive or negative
+			if the direction parameter is vert
+				current row ++ or -- depending on if distance is positive or negative
+		return true once complete
+
+
+
+Test Data:
+commandString			Reason
+------------------------------------------
+h0				Test dist = 0
+h1				Test single digit dist
+h12				Test two digit dist
+h10v10h-1			Test negative single digit dist (& multiple
+h15v10h-12			Test negative double digit dist
+
+v0				Test dist = 0
+v1				Test single digit dist
+v12				Test two digit dist
+v10h10v-1			Test negative single digit dist
+v15h10v-12			Test negative double digit dist
+
+f&v10				Test changing char
+h2v2h-1b&v-2			Test background
+h2v2h-1b&v-2f@h0		Test background to foreground
+
+c (after other strings)		Test clear
+h10f&ch5			Test clear returns current position and character to default
+
+h1 and then h1			Test current position returns to 1,1 after each command string
+h1b& and then v2		Test char and mode carry over between command strings
+
+(Empty string)			Exits main routine
+
+h99				Test right bound
+v99				Test bottom bound
+h-10				Test left bound
+v-10				Test top bound
+v-1				Check that top edge fails
+h-1				Check that left edge fails
+h30				Check that right edge fails
+v20				Check that left edge fails
+
+Q1				Check nonvalid command
+h10q1				Check nonvalid command deep in commandstring
+h1v2 h1				Check space in string
+H and V				Check no number
+H- and V-			Check only dash no number
+H111				Check too many numbers
+Ha				Check nonvalid distance
+Va				Check nonvalid distance
+H-a				Check nonvalid distance
+V-a				Check nonvalid distance
+f				Check no char
+b				Check no char
+q1h10z1				Check badPos is leftmost
+
+And all the spec commandstrings to make sure the output is the same.

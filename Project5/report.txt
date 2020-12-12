@@ -1,0 +1,56 @@
+Obstacles Overcame
+------------------
+Making sure that I have the right behavior for everything because the spec is really specific
+Making sure the player inputted trials don't break the game
+Counting flowers and bees without double counting anything or counting a flower as a bee etc
+Testing the program because the game is hard and thinking of ways errors could occur is difficult for it
+
+Pseudocode
+----------
+in main:
+load words into an array with getWords
+if no words are loaded
+	return 1
+input desired rounds
+if desired rounds is negative
+	output message
+	return 1
+repeatedly until playing the desired number of rounds
+	print round # and secret word length
+	play a round using playOneRound()
+	update stats with score from playOneRound()
+	print the number of tries taken and stats
+
+in playOneRound:
+if parameters are invalid
+	return -1
+repeatedly:
+	create an array to hold the secret word
+	copy the secret word into its array
+	create an array to hold the trial guess
+	prompt user for trial word
+	populate trial array
+	check that each char in trial is a lowercase char
+	if this check fails
+		print message
+	else
+		check that the trial word is in the array of all possible words
+		if this check fails
+			print message
+		else
+			For every letter match in trial and the secret word in the same place
+				increment flowers
+				replace the letter in the trial array with a ' '
+				replace the letter in the secret word array with a ' '
+			For every remaining letter in trial that matches a remaining letter anywhere in the secret word
+				increment bees
+				replace the letter in the trial array with a ' '
+				replace the letter in the secret word array with a ' '
+			increment tries
+			if we have the same number of flowers as letters in the secret word
+				return the number of tries it took to guess the word
+			else
+				print the number of flowers and bees
+				
+			
+

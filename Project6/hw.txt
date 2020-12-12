@@ -1,0 +1,165 @@
+1a.
+int main()
+{
+	int arr[3] = { 5, 10, 15 };
+	int* ptr = arr;
+
+	*ptr = 10;          // set arr[0] to 30
+	*(ptr + 1) = 20;      // set arr[1] to 20
+	ptr += 2;
+	ptr[0] = 30;        // set arr[2] to 10
+
+	while (ptr >= arr)
+	{
+		cout << *ptr << endl;    // print values
+		ptr--;
+	}
+}
+
+1b.
+//wasn't working because pointers pass by value,
+//meaning we couldn't change 
+void findMax(int arr[], int n, int* &pToMax)
+{
+	if (n <= 0)
+		return;      // no items, no maximum!
+
+	pToMax = arr;
+
+	for (int i = 1; i < n; i++)
+	{
+		if (arr[i] > * pToMax)
+			pToMax = arr + i;
+	}
+}
+
+int main()
+{
+	int nums[4] = { 5, 3, 15, 6 };
+	int* ptr;
+
+	findMax(nums, 4, ptr);
+	cout << "The maximum is at address " << ptr << endl;
+	cout << "It's at position " << ptr - nums << endl;
+	cout << "Its value is " << *ptr << endl;
+}
+
+1c.
+//Won't work beause the pointer is uninitialized and we need to give it a num to point to
+void computeCube(int n, int* ncubed)
+{
+	*ncubed = n * n * n;
+}
+
+int main()
+{
+	int num;
+	int* ptr = &num;
+	computeCube(5, ptr);
+	cout << "Five cubed is " << *ptr << endl;
+}
+
+1d.
+//Didn't work because the arrays weren't being dereferenced,
+//and the pointers were being compared instead of the characters
+bool strequal(const char str1[], const char str2[])
+{
+	while (*str1 != '\0' && *str2 != '\0')	//changed 0 to null byte for no real reason
+	{
+		if (*str1 != *str2)  // compare corresponding characters
+			return false;
+		str1++;            // advance to the next character
+		str2++;
+	}
+
+	return *str1 == *str2;   // both ended at same time?
+}
+
+int main()
+{
+	char a[15] = "Chen";
+	char b[15] = "Cheng";
+
+	if (strequal(a, b))
+		cout << "They're the same person!\n";
+}
+
+1e.
+//anArray doesn't exist outside of the scope of getPtrToArray so when we start using the pointers in main, we get garbage values
+
+2.
+		double* cat;
+		double mouse[5];
+		cat = &mouse[4];
+		*cat = 25;
+		*(mouse + 3) = 54;
+		cat -= 3;
+		cat[1] = 27;
+		cat[0] = 42;
+		bool b = (*cat == *(cat + 1));
+		bool d = (cat == mouse);
+
+3a.
+double mean(const double* scores, int numScores)
+{
+	const double* ptr = scores;
+	double tot = 0;
+	for(int i = 0; i < numScores; i++) {
+		tot += ptr[i];
+	}
+	return tot / numScores;
+}
+
+3b.
+const char* findTheChar(const char* str, char chr)
+{
+	for (int k = 0; *(str+k) != 0; k++)
+		if (*(str + k) == chr)
+			return (str + k);
+
+	return nullptr;
+}
+
+3c.
+const char* findTheChar(const char* str, char chr)
+{
+	while (*str != 0) {
+		if (*str == chr)
+			return str;
+		str++;
+	}
+	return nullptr;
+}
+
+4.
+The output will be 
+3	//the difference between a pointer to array[5] and ptr, which points to array[2] -- 3 units apart
+4	//gets swapped with -1, the first element, during swap2, swap1 doesn't do anything since it only works in pointers and never dereferences them
+79	// *(array+1), the element after the start of the array is set to 79
+-1	// maxwell returns the pointer which points to the greater int, which ptr is assigned to. In this case the pointer points to the start of the array. *ptr is set to -1 then swapped to the third position during swap2
+9	//after doing ptr +=2, ptr[1] or the array element after ptr, is set to 9
+22	//never changed
+19	//never changed
+
+5.
+void removeS(char* cptr)
+{
+	char* index = cptr;
+
+	while (*cptr != '\0') {
+		if (*cptr == 's' || *cptr == 'S') {
+			cptr++;
+		}
+		else {
+			*index = *cptr;
+			index++;
+			cptr++;
+		}
+	}
+	*index = '\0';
+}
+
+
+
+
+

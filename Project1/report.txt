@@ -1,0 +1,23 @@
+In step 5 I input that 0 people were surveyed, but 10 people support impeachment and 10 people oppose impeachment.
+
+The resulting output was "inf% say they support impeachment." and "inf% say they oppose impeachment."
+
+
+
+logic_error.cpp is identical to original.cpp with the exception that it multiplies
+forImpeachment / numberSurveyed and antiImpeachment / numberSurveyed by 10.0 instead of 100.0
+
+The result is that the program still runs, but outputs percentage values which are a tenth as large as they should be.
+
+
+
+compile_error.cpp is identical to original.cpp with the exceptions that it says "i" instead of "int" in line 9,
+and lacks a semicolon at the end of line 10.
+
+The result of leaving out the semicolon on line 10 ws an error message in the compiler stating that
+a semicolon needs to go before the "int" on the next line.
+
+The result of misspelling "int" created six errors.
+One for the undeclared identifier "i" which was "int" misspelled
+One for not having a semicolon before numberSurveyed, as it assumes numberSurveyed is supposed to be an identifier
+and one for each of the four times numberSurveyed appears in the code because it was never properly introduced.
